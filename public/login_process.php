@@ -9,7 +9,7 @@ if(isset($_POST['username'], $_POST['password'])) {
     $_SESSION['$password'] = trim($_POST['password']);
 
     //Dirigirse a la pagina de INICIO de la biblioteca
-    header('location: inicio.php');
+    header('location: views/inicio.php');
 }
 
 ?>
