@@ -1,6 +1,15 @@
 <?php  
 include "../public/login_process.php";
-include "../partials/navbar.php";
+include "../partials/navbar.php"; //NAVBAR posee un session_start(), por ello no se especifica aqui
+
+//Inicializacion de Array para guardar libros y hacer el CRUD
+if(isset($_SESSION['libros'])) {
+    $_SESSION['libros'] = [];
+}
+
+
+
+
 ?>
 
 <!DOCTYPE html>

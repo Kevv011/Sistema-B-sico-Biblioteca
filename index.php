@@ -23,15 +23,14 @@ require "./public/login_process.php"; //Funcionamiento de simulacion de LOGIN
 
         <!--TITULO-->
         <section>
-            <h1>Iniciar Sesión </h1>
+            <h1>Ingresar a sistema BIBIOTECH </h1>
         </section>
 
         <!--FORM DE INICIO DE SESION-->
         <form action="" method="post">
-            <input type="text" name="username" placeholder="Usuario" required>
-            <input type="password" name="password" placeholder="Contraseña" required>
+            <input type="text" name="username" placeholder="Escribe tu nombre" required>
 
-            <button type="submit">Iniciar Sesión</button>
+            <button type="submit">Ingresar</button>
         </form>
     </main>
 
