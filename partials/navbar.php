@@ -1,10 +1,11 @@
+<?php include "../public/login_process.php"; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navbar</title>
 
     <!--CSS BOOTSTRAP-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -29,7 +30,7 @@
 
         <div class="container-fluid px-5 d-flex justify-content-between align-items-center">
             <!--LOGOTIPO-->
-            <a class="navbar-brand d-flex gap-3 align-items-center" href="#">
+            <a class="navbar-brand d-flex gap-3 align-items-center" href="../views/inicio.php">
                 <div class="logo-container rounded-circle p-3 bg-body-tertiary">
                     <img class="img-fluid" src="../assets/img/logo.png" alt="Logotype" width="60">
                 </div>
@@ -45,11 +46,11 @@
             <!--LISTA DE ELEMENTOS DEL NAV-->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link text-white fs-5" href="#">+Agregar</a>
+                    <a class="nav-link text-white fs-5" href="../views/addAutor_addCategoria.php">+Agregar</a>
 
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link text-white fs-5" href="#">Cerrar Sesión</a>
+                    <a class="nav-link text-white fs-5" href="#">Cerrar Sesión</a>
                 </li>
               </ul>
         </div>

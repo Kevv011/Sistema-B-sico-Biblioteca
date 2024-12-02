@@ -1,23 +1,28 @@
 <?php  
-include "../public/login_process.php";
 include "../partials/navbar.php"; //NAVBAR posee un session_start(), por ello no se especifica aqui
+require "../class/libro.php";
 
 //Inicializacion de Array para guardar libros y hacer el CRUD
-if(isset($_SESSION['libros'])) {
+if(!isset($_SESSION['libros'])) {
     $_SESSION['libros'] = [];
 }
+
+$libros = $_SESSION['libros'];
 
 //Obtencion de las variables de los campos con POST
 if(isset($_POST['book'], $_POST['autor'], $_POST['category'])) {
   
-  $nombreLibro = $_POST['book'];
-  $nombreAutor = $_POST['autor'];
-  $nombreCategoria = $_POST['category'];
+  $idLibro = count($libros) + 1;
+  $nombreLibro = trim($_POST['book']);
+  $nombreAutor = trim($_POST['autor']);
+  $nombreCategoria = trim($_POST['category']);
+
+  $libro = new Libro($nombreLibro, $nombreAutor, $nombreCategoria ); //Instancia de clase Libro
+
+  $libros[] = $libro;
+  print_r($libros);
+  
 }
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +31,7 @@ if(isset($_POST['book'], $_POST['autor'], $_POST['category'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inicio Biblioteca</title>
+  <title>Inicio</title>
 </head>
 
 <body>
@@ -40,7 +45,7 @@ if(isset($_POST['book'], $_POST['autor'], $_POST['category'])) {
 
     <!--TABLA DE REGISTRO DE LIBROS Y FILTROS DE BUSQUEDA-->
 
-
+    <?php print_r($libros); ?>
   </main>
 
   <!-- Button trigger modal -->
@@ -66,7 +71,7 @@ if(isset($_POST['book'], $_POST['autor'], $_POST['category'])) {
             <!--LIBRO-->
             <div class="row mb-4">
               <label class="h5">Nombre del libro:</label>
-              <input class="form-control" type="text" name="autor" placeholder="Los viajes de Gulliver..." required>
+              <input class="form-control" type="text" name="book" placeholder="Los viajes de Gulliver..." required>
             </div>
 
             <!--AUTOR-->
@@ -75,9 +80,9 @@ if(isset($_POST['book'], $_POST['autor'], $_POST['category'])) {
 
               <select class="form-select" name="autor" required>
                 <option selected>Selecciona un autor</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option value="<?php  ?>">One</option>
+                <option value="ee">Two</option>
+                <option value="ii">Three</option>
               </select>
             </div>
             
@@ -87,9 +92,9 @@ if(isset($_POST['book'], $_POST['autor'], $_POST['category'])) {
 
               <select class="form-select" name="category" required>
                 <option selected>Selecciona una categoria</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option value="aa">One</option>
+                <option value="ee">Two</option>
+                <option value="ii">Three</option>
               </select>
             </div>
           </div>
