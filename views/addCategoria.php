@@ -20,6 +20,10 @@ if(isset($_POST['category-form'])) { //Obtencion de datos del formulario
   $categorias[] = $categoria; //Ingreso de datos por medio del objeto al array
 
   $_SESSION['categorias'] = $categorias; //Mantener datos en la sesion
+
+  //Redireccion al ser enviado el form
+  header("location: addCategoria.php");
+  exit;
 }
 ?>
 
@@ -60,7 +64,7 @@ if(isset($_POST['category-form'])) { //Obtencion de datos del formulario
 
           <!--NOMBRE CATEGORIA-->
           <div class="row mb-4">
-            <label class="h5">Categoria:</label>
+            <label class="h5">Categoria de libro:</label>
             <input class="form-control" type="text" name="categoria" placeholder="Suspenso..." required>
           </div>
 
@@ -87,7 +91,7 @@ if(isset($_POST['category-form'])) { //Obtencion de datos del formulario
             <thead class="table-primary text-center">
               <tr>
                 <th>Id</th>
-                <th>Categoria</th>
+                <th>Categoria de libro</th>
                 <th>Código de Categoria</th>
                 <th>Acciones</th>
               </tr>
@@ -96,7 +100,7 @@ if(isset($_POST['category-form'])) { //Obtencion de datos del formulario
 
             <?php if(!count($categorias) > 0) { ?>
               <tr>
-                <td colspan="3">Aún no existen registros de categorias</td>
+                <td colspan="4">Aún no existen registros de categorias</td>
               </tr>
             <?php }else { ?>
               

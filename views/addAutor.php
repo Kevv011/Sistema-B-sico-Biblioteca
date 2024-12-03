@@ -25,6 +25,10 @@ if(isset($_POST['autor-form'])) {
   //Mantener todos los elementos en la sesion
   $_SESSION['autores'] = $autores;
 
+  //Redireccion al ser enviado el form
+  header("location: addAutor.php");
+  exit;
+
 }
 ?>
 
