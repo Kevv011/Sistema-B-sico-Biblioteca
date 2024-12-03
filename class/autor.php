@@ -30,3 +30,4 @@ class Autor {
         return $this->generoLit;
     }
 }
+?>

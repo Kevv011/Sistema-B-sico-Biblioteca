@@ -1,28 +1,36 @@
 <?php  
-include "../partials/navbar.php"; //NAVBAR posee un session_start(), por ello no se especifica aqui
-require "../class/libro.php";
+include "../class/autor.php";
+include "../class/categoria.php";
+include "../class/libro.php";
+
+session_start();
+
+if(!isset($_SESSION['autores'], $_SESSION['categorias'])) { //Validacion si no hay autores y categorias creadas
+  echo "Aun no existen autores o categrias definidas";
+}
 
 //Inicializacion de Array para guardar libros y hacer el CRUD
 if(!isset($_SESSION['libros'])) {
     $_SESSION['libros'] = [];
 }
 
-$libros = $_SESSION['libros'];
+$libros = $_SESSION['libros']; //Array de libros
 
 //Obtencion de las variables de los campos con POST
-if(isset($_POST['book'], $_POST['autor'], $_POST['category'])) {
+if(isset($_POST['nomLibro'], $_POST['autor'], $_POST['category'])) {
   
-  $idLibro = count($libros) + 1;
-  $nombreLibro = trim($_POST['book']);
-  $nombreAutor = trim($_POST['autor']);
-  $nombreCategoria = trim($_POST['category']);
+  $id = count($libros) + 1;
+  $nombreLibro = $_POST['nomLibro'];
+  $nombreAutor = $_POST['autor'];
+  $nombreCategoria = $_POST['category'];
 
-  $libro = new Libro($nombreLibro, $nombreAutor, $nombreCategoria ); //Instancia de clase Libro
+  $libro = new Libro($id, $nombreLibro, $nombreAutor, $nombreCategoria); //Instancia
 
   $libros[] = $libro;
-  print_r($libros);
-  
+
+  $_SESSION['libros'] = $libros;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -31,21 +39,20 @@ if(isset($_POST['book'], $_POST['autor'], $_POST['category'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inicio</title>
+  <title>Inicio Biblioteca</title>
 </head>
 
 <body>
+  <?php include "../partials/navbar.php"; ?>
 
   <main>
-
+<?php print_r($libros); ?>
     <!--TITULO-->
     <section>
       <h1>BIBLIOTECH</h1>
     </section>
 
     <!--TABLA DE REGISTRO DE LIBROS Y FILTROS DE BUSQUEDA-->
-
-    <?php print_r($libros); ?>
   </main>
 
   <!-- Button trigger modal -->
@@ -71,18 +78,27 @@ if(isset($_POST['book'], $_POST['autor'], $_POST['category'])) {
             <!--LIBRO-->
             <div class="row mb-4">
               <label class="h5">Nombre del libro:</label>
-              <input class="form-control" type="text" name="book" placeholder="Los viajes de Gulliver..." required>
+              <input class="form-control" type="text" name="nomLibro" placeholder="Los viajes de Gulliver..." required>
             </div>
 
             <!--AUTOR-->
             <div class="row mb-4">
               <label class="h5">Nombre del autor:</label>
 
+              <!--PHP para mandar a llamar a autores registrados en AddAutor-->
+              <?php if(!count($_SESSION['autores']) > 0) { ?>
+
+                <div>
+                  ¡Aun no existen autores registrados!. Haz click para registrar uno 
+                  <a href="./addAutor.php">+ Agregar</a>
+                </div>
+              
+              <?php } else {?>
+
               <select class="form-select" name="autor" required>
-                <option selected>Selecciona un autor</option>
-                <option value="<?php  ?>">One</option>
-                <option value="ee">Two</option>
-                <option value="ii">Three</option>
+                <?php foreach($_SESSION['autores'] as $autor) { ?>
+                  <option value="<?php echo $autor->getNombreAutor(); ?>"><?php echo $autor->getNombreAutor(); ?></option>
+                <?php } } ?>
               </select>
             </div>
             
@@ -90,11 +106,20 @@ if(isset($_POST['book'], $_POST['autor'], $_POST['category'])) {
             <div class="row mb-4">
               <label class="h5">Categoria:</label>
 
+              <!--PHP para mandar a llamar a categorias registrados en AddCategoria-->
+              <?php if(!count($_SESSION['categorias']) > 0) { ?>
+
+                <div>
+                  ¡Aun no existen categorias registradas!. Haz click para registrar una
+                  <a href="./addCategoria.php">+ Agregar</a>
+                </div>
+              
+              <?php } else {?>
+
               <select class="form-select" name="category" required>
-                <option selected>Selecciona una categoria</option>
-                <option value="aa">One</option>
-                <option value="ee">Two</option>
-                <option value="ii">Three</option>
+                <?php foreach($_SESSION['categorias'] as $categoria) { ?>
+                  <option value="<?php echo $categoria->getNombreCategoria(); ?>"><?php echo $categoria->getNombreCategoria(); ?></option>
+                <?php } } ?>
               </select>
             </div>
           </div>

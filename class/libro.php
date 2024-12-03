@@ -5,11 +5,11 @@ class Libro {
     //Propiedades
     private $id;
     private $nombreLibro;
-    private Autor $autor;
-    private Categoria $categoria;
+    private $autor;
+    private $categoria;
     
     //Constructor
-    public function __construct($idParam, $nombreLibroParam, Autor $autorParam, Categoria $categoriaParam) {
+    public function __construct($idParam, $nombreLibroParam, $autorParam, $categoriaParam) {
 
         $this->id = $idParam;
         $this->nombreLibro = $nombreLibroParam;
@@ -24,10 +24,10 @@ class Libro {
     public function getNombreLibro() {
         return $this->nombreLibro;
     }
-    public function getAutor(): Autor {
+    public function getAutor() {
         return $this->autor;
     }
-    public function getCategoria(): Categoria {
+    public function getCategoria() {
         return $this->categoria;
     }
 
@@ -36,12 +36,12 @@ class Libro {
         $this->id = $id;
     }
     public function setNombre($nombre) {
-        $this->nombre = $nombreLibro;
+        $this->nombreLibro = $nombre;
     }
-    public function setAutor(Autor $autor) {
+    public function setAutor($autor) {
         $this->autor = $autor;
     }
-    public function setCategoria(Categoria $categoria) {
+    public function setCategoria($categoria) {
         $this->categoria = $categoria;
     }
 }

@@ -1,5 +1,3 @@
-<?php include "../public/login_process.php"; ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -59,7 +57,8 @@
     <!--NAV SECUNDARIO-->
     <nav class="second-nav p-2">
         <div class="container-fluid text-center">
-            <span class="navbar-brand h1 p-3 fs-5 p-3">¡Bienvenido, <?php echo  $_SESSION['$username']; ?>!</span>
+            <!-- <span class='navbar-brand h1 p-3 fs-5 p-3'>¡Bienvenido, <?php //echo $_SESSION['$username'] ?> </span>" -->
+            
         </div>
     </nav>
 

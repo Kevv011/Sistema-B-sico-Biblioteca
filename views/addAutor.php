@@ -1,19 +1,31 @@
 <?php
-if(isset($_SESSION['autores'])) {
+require "../class/autor.php"; //Requerimiento de la clase Autor
+
+session_start();
+
+if(!isset($_SESSION['autores'])) { //Inicializacion del array
   $_SESSION['autores'] = [];
 }
 
-$autores = $_SESSION['autores'];
+$autores = $_SESSION['autores']; //Array
 
 if(isset($_POST['autor-form'])) {
 
   $id = count($autores) + 1;
-  $nombreAutor = $_POST[''];
-  $pais = $_POST[''];
-  $generoLit = $_POST[''];
+  $nombreAutor = $_POST['nombre'];
+  $pais = $_POST['pais'];
+  $generoLit = $_POST['generoLit'];
+
+  //Instancia
+  $autor = new Autor($id, $nombreAutor, $pais, $generoLit);
+
+  //Agregacion de elementos al array
+  array_push($autores, $autor);
+
+  //Mantener todos los elementos en la sesion
+  $_SESSION['autores'] = $autores;
 
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +34,7 @@ if(isset($_POST['autor-form'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Agregar Autor</title>
 
   <!--ESTILOS-->
   <style>
@@ -34,10 +46,18 @@ if(isset($_POST['autor-form'])) {
 
 <body>
 
-  <main class="container">
+  <main>
+
+  <?php include "../partials/navbar.php"; ?>
+
+    <!-- Botones -->
+    <div class="d-flex justify-content-center mt-4">
+      <a class="btn btn-light rounded-0 border border-black" href="./addAutor.php">Ingresar un autor</a>
+      <a class="btn btn-dark rounded-0" href="./addCategoria.php">Ingresar una categoria</a>
+    </div>
 
     <!--FORM PARA INGRESAR UN AUTOR-->
-    <div>
+    <div class="container">
       <form class="autor-form p-4 rounded-4 mt-4 border border-black" action="" method="post">
         <input type="hidden" name="autor-form" value="autor-form"> <!--INPUT PARA OBTENER DATOS DE AUTOR-->
         <input type="hidden" name="idAutor" value="<?php  ?>"> <!--INPUT PARA OBTENER ID-->
@@ -47,20 +67,20 @@ if(isset($_POST['autor-form'])) {
           <!--NOMBRE-->
           <div class="row mb-4">
             <label class="h5">Nombre del autor:</label>
-            <input class="form-control" type="text" name="book" placeholder="Edgar Allan Poe..." required>
+            <input class="form-control" type="text" name="nombre" placeholder="Edgar Allan Poe..." required>
           </div>
 
           <!--Nacionalidad-->
           <div class="row mb-4">
             <label class="h5">Pais de Origen:</label>
-            <input class="form-control" type="text" name="book" placeholder="Estados Unidos..." required>
+            <input class="form-control" type="text" name="pais" placeholder="Estados Unidos..." required>
           </div>
 
           <!--GENERO LITERARIO-->
           <div class="row mb-4">
             <label class="h5">Genero Literario:</label>
 
-            <select class="form-select" name="category" required>
+            <select class="form-select" name="generoLit" required>
               <option selected>Selecciona un género literario</option>
               <option value="ficcion">Ficción</option>
               <option value="no_ficcion">No ficción</option>
@@ -94,44 +114,36 @@ if(isset($_POST['autor-form'])) {
           <table class="table table-bordered table-hover table-striped">
             <thead class="table-primary text-center">
               <tr>
-                <th>#</th>
+                <th>Id</th>
                 <th>Nombre</th>
+                <th>País de origen</th>
                 <th>Género Literario</th>
-                <th>Autor</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>El Principito</td>
-                <td>Ficción</td>
-                <td>Antoine de Saint-Exupéry</td>
+
+            <?php 
+            if(count($autores) > 0) {
+            
+            foreach($autores as $autoresForeach) { ?>
+              <tr class="text-center text-capitalize">
+                <td><?php echo $autoresForeach->getId(); ?></td>
+                <td><?php echo $autoresForeach->getNombreAutor(); ?></td>
+                <td><?php echo $autoresForeach->getPais(); ?></td>
+                <td><?php echo $autoresForeach->getGeneroLit(); ?></td>
                 <td class="text-center">
                   <button class="btn btn-success btn-sm">Editar</button>
                   <button class="btn btn-danger btn-sm">Eliminar</button>
                 </td>
               </tr>
-              <tr>
-                <td>2</td>
-                <td>Cien años de soledad</td>
-                <td>Realismo Mágico</td>
-                <td>Gabriel García Márquez</td>
-                <td class="text-center">
-                  <button class="btn btn-success btn-sm">Editar</button>
-                  <button class="btn btn-danger btn-sm">Eliminar</button>
-                </td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Orgullo y prejuicio</td>
-                <td>Romance</td>
-                <td>Jane Austen</td>
-                <td class="text-center">
-                  <button class="btn btn-success btn-sm">Editar</button>
-                  <button class="btn btn-danger btn-sm">Eliminar</button>
-                </td>
-              </tr>
+
+            <?php } } else { ?>
+                    <tr>
+                      <td colspan="5" class="text-center"><?php echo "Aún no hay registro de autores"; ?></td>
+                    </tr>
+            <?php } ?>
+
             </tbody>
           </table>
         </div>
