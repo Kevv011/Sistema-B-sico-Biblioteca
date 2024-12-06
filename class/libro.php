@@ -7,14 +7,16 @@ class Libro {
     private $nombreLibro;
     private $autor;
     private $categoria;
+    private $estado;
     
     //Constructor
-    public function __construct($idParam, $nombreLibroParam, $autorParam, $categoriaParam) {
+    public function __construct($idParam, $nombreLibroParam, $autorParam, $categoriaParam, $estadoParam) {
 
         $this->id = $idParam;
         $this->nombreLibro = $nombreLibroParam;
         $this->autor = $autorParam;
         $this->categoria = $categoriaParam;
+        $this->estado = $estadoParam;
     }
 
     //Metodos GETTERS
@@ -30,6 +32,9 @@ class Libro {
     public function getCategoria() {
         return $this->categoria;
     }
+    public function getEstado() {
+        return $this->estado;
+    }
 
     //Metodos SETTERS
     public function setId($id) {
@@ -43,6 +48,9 @@ class Libro {
     }
     public function setCategoria($categoria) {
         $this->categoria = $categoria;
+    }
+    public function setEstado($estado) {
+        $this->estado = $estado;
     }
 }
 

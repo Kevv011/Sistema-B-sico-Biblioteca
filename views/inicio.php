@@ -1,95 +1,4 @@
-<?php  
-include "../class/autor.php";
-include "../class/categoria.php";
-include "../class/libro.php";
-
-session_start();
-
-if(!isset($_SESSION['autores'], $_SESSION['categorias'])) { //Inicializa los arrays al iniciar la sesion
-  $_SESSION['categorias'] = [];
-  $_SESSION['autores'] = [];
-}
-
-//Inicializacion de Array para guardar libros y hacer el CRUD
-if(!isset($_SESSION['libros'])) {
-    $_SESSION['libros'] = [];
-}
-
-$libros = $_SESSION['libros']; //Array de libros
-
-if(isset($_POST['librosForm'])) { //Contenido que se manda del form de CREACION
-
-  //Obtencion de las variables de los campos con POST
-  if(isset($_POST['nomLibro'], $_POST['autor'], $_POST['category'])) {
-    
-    $id = count($libros) + 1;
-    $nombreLibro = $_POST['nomLibro'];
-    $nombreAutor = $_POST['autor'];
-    $nombreCategoria = $_POST['category'];
-  
-    $libro = new Libro($id, $nombreLibro, $nombreAutor, $nombreCategoria); //Instancia
-  
-    $libros[] = $libro;
-  
-    $_SESSION['libros'] = $libros;
-  
-    //Redireccion al ser enviado el form
-    header("location: inicio.php");
-    exit;
-  }
-}
-
-//Funcion para obtener una aerolinea por su ID
-function obtenerId($id, $libros) {
-    foreach($libros as $libro) {
-        if($libro->getId() == $id) {
-            return $libro;
-        }
-    }
-  }
-
-  //Actualizar un registro de libro
-  if(isset($_POST['updateBookForm'])) {
-    foreach($libros as $libroEditado) {
-
-        if($libroEditado->getId() == $_POST['id']) {
-            $libroEditado->setNombre($_POST['editNombre']);
-            $libroEditado->setAutor($_POST['editAutor']);
-            $libroEditado->setCategoria($_POST['editCategoria']);    
-        }
-    }
-    header("location: inicio.php");
-  }
-
-  //Eliminacion de un libro
-  if(isset($_GET['delete'])){
-    $id = $_GET['delete'];
-
-    foreach($libros as $key => $libro){
-        if($libro->getId() == $id){
-            unset($libros[$key]);
-            break;
-        }
-    }
-    $_SESSION['libros'] = $libros;
-    header("location: inicio.php"); 
-   }
-
-   //Busqueda de un libro
-   $busquedaEncontrada = []; //Array que guardara al resultado encontrado
-
-   if(isset($_GET['buscarLibro'])) { //Obtencion del input de busqueda
-    $buscar = trim($_GET['buscarLibro']);
-
-    foreach($libros as $libroBuscar) {
-
-        //stripos busca un elemento sin importar mayus y minus
-        if(stripos($libroBuscar->getNombreLibro(), $buscar) !== false) {
-            $busquedaEncontrada[] = $libroBuscar;
-        }
-    }
-   }
-?>
+<?php require "../php/CRUD_libros.php"; //Procesamiento de CRUD de libros ?> 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -130,17 +39,43 @@ function obtenerId($id, $libros) {
             <h1 class="display-5 text-dark">BIBLIOTECH</h1>
         </section>
 
-        <!-- Resultados de la búsqueda -->
-        <div class="container mt-4">
-            <?php if (!empty($busquedaEncontrada)) { // Si hay libros encontrados ?>
-            <div class="row">
-            <div class="alert alert-success text-center" role="alert">
+        <div class="container mt-5">
+            <div class="alert alert-danger text-center shadow-sm" role="alert">
+                <h4 class="alert-heading">¡Bienvenido a la gestión de tu biblioteca!</h4>
+                <p>
+                    Aquí puedes ingresar tus libros preferidos y visualizarlos en la tabla inferior.
+                    <?php if (!count($_SESSION['autores']) > 0 or !count($_SESSION['categorias']) > 0) { ?>
+                        Para iniciar a agregarlos, primero debes crear tus autores y tus categorías.
+                    <?php } else{ ?>
+                        Crea tus autores y categorias preferidas si deseas registrar mas libros.
+                <?php } ?>
+                </p>
+                <hr>
                 <div>
-                    <i class="fa-solid fa-magnifying-glass fs-5"></i>
-                    <p>Busquedas recientes.</p>
+                    <a href="./addAutor_addCategoria.php" class="btn btn-success">
+                        <i class="fas fa-plus me-1"></i> Agregar autores y categorias
+                    </a>
+                    <?php if (count($_SESSION['autores']) > 0 && count($_SESSION['categorias']) > 0) { ?>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLibro">
+                            <i class="fas fa-plus me-1"></i> Agregar Libro
+                        </button>
+                    <?php } ?>
                 </div>
-                <a class="btn btn-danger" href="javascript:window.location.href='inicio.php';">Cerrar</a>
             </div>
+        </div>
+
+        <!-- Resultados de la búsqueda -->
+        <div class="container my-4">
+            <?php if (!empty($busquedaEncontrada)) { // Si hay libros encontrados ?>
+                <hr>
+            <div class="row">
+                <div class="alert alert-success text-center d-flex justify-content-between" role="alert">
+                    <div class="d-flex flex-row gap-2 align-items-center">
+                        <i class="fa-solid fa-magnifying-glass fs-5"></i>
+                        <p class="h1 fs-5">Busqueda encontradas</p>
+                    </div>
+                    <a class="btn btn-danger" href="javascript:window.location.href='inicio.php';">Cerrar</a>
+                </div>
                 <?php foreach ($busquedaEncontrada as $libro) { ?>
                 <div class="col-md-4 mb-4">
                     <div class="card shadow h-100">
@@ -171,18 +106,13 @@ function obtenerId($id, $libros) {
             <?php } ?>
         </div>
 
-        <!-- Botón para agregar libro -->
-        <div class="text-end mb-3">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addLibro">
-                <i class="fas fa-plus me-1"></i> Agregar Libro
-            </button>
-        </div>
+        <hr>
 
         <!-- Tabla de resultados -->
         <div class="table-responsive my-4">
             <table class="table table-striped table-hover align-middle">
                 <thead class="table-primary">
-                    <tr>
+                    <tr class="text-center">
                         <th scope="col">Id</th>
                         <th scope="col">Nombre del Libro</th>
                         <th scope="col">Autor</th>
@@ -190,7 +120,7 @@ function obtenerId($id, $libros) {
                         <th scope="col" class="text-center">Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="text-center">
                     <?php if(!count($libros) > 0) { ?>
                     <tr>
                         <td class="text-center" colspan="5">Aún no existen libros registrados</td>
@@ -352,33 +282,21 @@ function obtenerId($id, $libros) {
                     <div class="modal-body">
                         <form action="" method="post">
 
-                            <input type="hidden" name="librosForm" value="librosForm">
-                            <!--Input que obtiene valor del form-->
+                            <input type="hidden" name="librosForm" value="librosForm"> <!--Input que obtiene valor del form-->
+                            <input type="hidden" name="estado" value="disponible"> <!--Input que obtiene valor del estado DISPONIBLE-->
 
                             <div class="col my-2 mx-3">
 
                                 <!-- Nombre del libro -->
                                 <div class="row mb-4">
                                     <label class="h5">Nombre del libro:</label>
-                                    <?php if (!count($_SESSION['autores']) > 0 && !count($_SESSION['categorias']) > 0) { ?>
-                                    <input class="form-control" type="text" placeholder="Los viajes de Gulliver..."
-                                        disabled>
-                                    <?php } else { ?>
-                                    <input class="form-control" type="text" name="nomLibro"
-                                        placeholder="Los viajes de Gulliver..." required>
-                                    <?php } ?>
+                                    <input class="form-control" type="text" name="nomLibro" placeholder="Los viajes de Gulliver..." required>
                                 </div>
 
                                 <!-- Autor -->
                                 <div class="row mb-4">
                                     <label class="h5">Nombre del autor:</label>
-                                    <?php if (!count($_SESSION['autores']) > 0) { ?>
-                                    <div class="card text-center px-2 py-3 bg-light">
-                                        <p class="mb-2">¡Aún no existen autores registrados! Haz click para registrar
-                                            uno</p>
-                                        <a class="btn btn-success mt-2" href="./addAutor.php">+ Agregar</a>
-                                    </div>
-                                    <?php } else { ?>
+                                    
                                     <select class="form-select" name="autor" required>
                                         <?php foreach ($_SESSION['autores'] as $autor) { ?>
                                         <option value="<?php echo $autor->getNombreAutor(); ?>">
@@ -386,33 +304,19 @@ function obtenerId($id, $libros) {
                                         </option>
                                         <?php } ?>
                                     </select>
-                                    <?php } ?>
                                 </div>
 
                                 <!-- Categoría -->
                                 <div class="row mb-4">
                                     <label class="h5">Categoría:</label>
 
-                                    <?php if (!count($_SESSION['categorias']) > 0) { ?>
-
-                                    <div class="card text-center px-2 py-3 bg-light">
-                                        <p class="mb-2">¡Aún no existen categorías registradas! Haz click para registrar
-                                            una</p>
-                                        <a class="btn btn-primary mt-2" href="./addCategoria.php">+ Agregar</a>
-                                    </div>
-
-                                    <?php } else { ?>
-
                                     <select class="form-select" name="category" required>
                                         <?php foreach ($_SESSION['categorias'] as $categoria) { ?>
                                         <option value="<?php echo $categoria->getNombreCategoria(); ?>">
                                             <?php echo $categoria->getNombreCategoria(); ?>
                                         </option>
-
                                         <?php } ?>
-
                                     </select>
-                                    <?php } ?>
 
                                 </div>
                             </div>
@@ -429,6 +333,8 @@ function obtenerId($id, $libros) {
             </div>
         </div>
     </main>
+
+    <?php include "../partials/footer.php" ?>
 </body>
 
 

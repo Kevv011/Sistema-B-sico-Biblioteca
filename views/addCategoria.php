@@ -55,6 +55,28 @@ if(isset($_POST['category-form'])) { //Obtencion de datos del formulario
       <a class="btn btn-dark rounded-0" href="./addCategoria.php">Ingresar una categoria</a>
     </div>
 
+    <?php if (!count($_SESSION['autores']) > 0 && !count($_SESSION['categorias']) > 0) { ?>
+    <div class="alert alert-warning text-center mx-4 mt-4" role="alert">
+      <i class="fas fa-exclamation-circle"></i> Ingresa al menos una categoria para registrar un libro.
+    </div>
+    <?php } elseif (count($_SESSION['autores']) > 0 && !count($_SESSION['categorias']) > 0) { ?>
+      <div class="alert alert-warning text-center mx-4 mt-4" role="alert">
+      <i class="fas fa-exclamation-circle"></i> Existen autores registrados. Ingresa al menos una categoria para poder registrar un libro.
+    </div>
+    <?php } elseif (!count($_SESSION['autores']) > 0 && count($_SESSION['categorias']) > 0) { ?>
+      <div class="alert alert-warning text-center mx-4 mt-4" role="alert">
+      <i class="fas fa-exclamation-circle"></i> Existen categorias registradas. Ingresa al menos un autor para poder registrar un libro.
+    </div>
+    <?php }else { ?>
+      <div class="alert alert-warning text-center mx-4 mt-4 d-flex flex-column align-items-center justify-content-center" role="alert">
+      <div>
+        <i class="fas fa-exclamation-circle fs-2"></i>
+        <p>Existen autores y categorias. ¡Haz ingreso de un libro!</p>
+      </div>
+      <a class="btn btn-primary" href="./inicio.php">+ Ingresar libro</a>
+    </div>
+    <?php } ?>
+
     <!--FORM PARA INGRESAR UNA CATEGORIA-->
     <div class="container">
       <form class="category-form p-4 rounded-4 mt-4 border border-black" action="" method="post">
@@ -93,14 +115,13 @@ if(isset($_POST['category-form'])) { //Obtencion de datos del formulario
                 <th>Id</th>
                 <th>Categoria de libro</th>
                 <th>Código de Categoria</th>
-                <th>Acciones</th>
               </tr>
             </thead>
             <tbody class="text-center text-capitalize">
 
             <?php if(!count($categorias) > 0) { ?>
               <tr>
-                <td colspan="4">Aún no existen registros de categorias</td>
+                <td colspan="3">Aún no existen registros de categorias</td>
               </tr>
             <?php }else { ?>
               
@@ -109,10 +130,6 @@ if(isset($_POST['category-form'])) { //Obtencion de datos del formulario
                 <td><?php echo $categoriasForeach->getId(); ?></td>
                 <td><?php echo $categoriasForeach->getNombreCategoria(); ?></td>
                 <td><?php echo $categoriasForeach->getcodCategoria(); ?></td>
-                <td class="text-center">
-                  <button class="btn btn-success btn-sm">Editar</button>
-                  <button class="btn btn-danger btn-sm">Eliminar</button>
-                </td>
               </tr>
             <?php } } ?>
               
@@ -122,6 +139,8 @@ if(isset($_POST['category-form'])) { //Obtencion de datos del formulario
       </div>
     </div>
   </main>
+
+  <?php include "../partials/footer.php" ?>
 
 </body>
 

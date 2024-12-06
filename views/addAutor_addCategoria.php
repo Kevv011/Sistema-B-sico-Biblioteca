@@ -10,26 +10,25 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
   <?php include "../partials/navbar.php"; ?>
 
-
-  <main>
+  <main class="flex-grow-1">
     <div class="m-4 text-center">
       <h2><strong>Agregar autor o categoria</strong></h2>
     </div>
 
     <div class="container my-5 d-flex justify-content-center">
-    <!-- Card -->
-    <div class="card shadow-lg" style="width: 24rem; border-radius: 15px;">
-      <div class="card-body text-center">
-        <!-- Icono atractivo -->
-        <div class="d-flex justify-content-center align-items-center mb-3">
-          <div class="border border-black rounded-circle">
-            <i class="fa-solid fa-plus fs-1 p-2"></i>
+      <!-- Card -->
+      <div class="card shadow-lg" style="width: 24rem; border-radius: 15px;">
+        <div class="card-body text-center">
+          <!-- Icono atractivo -->
+          <div class="d-flex justify-content-center align-items-center mb-3">
+            <div class="border border-black rounded-circle">
+              <i class="fa-solid fa-plus fs-1 p-2"></i>
+            </div>
           </div>
-        </div>
 
           <!-- Título -->
           <h4 class="card-title mb-3">¿Qué deseas agregar?</h4>
@@ -44,6 +43,7 @@
     </div>
   </main>
 
+  <?php include "../partials/footer.php" ?>
 
 </body>
 

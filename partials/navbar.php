@@ -45,13 +45,17 @@
 
             <!-- Menú collapse -->
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav ms-auto text-center">
+                <ul class="navbar-nav ms-auto text-center d-flex justify-content-center align-items-center">
                     <li class="nav-item">
                         <a class="nav-link text-white fs-5" href="../views/addAutor_addCategoria.php">+Agregar</a>
                     </li>
                     <li class="nav-item">
-                        <button type="button" class="btn text-white fs-5" data-bs-toggle="modal"
-                            data-bs-target="#logOutModal">Cerrar Sesión</button>
+                        <a href="../views/prestamoLibro.php" class="btn text-white fs-5">Prestamos</a>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn text-white fs-5" data-bs-toggle="modal" data-bs-target="#logOutModal">
+                            <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesion
+                        </button>
                     </li>
                 </ul>
             </div>

@@ -60,6 +60,30 @@ if(isset($_POST['autor-form'])) {
       <a class="btn btn-dark rounded-0" href="./addCategoria.php">Ingresar una categoria</a>
     </div>
 
+    <?php if (!count($_SESSION['autores']) > 0 && !count($_SESSION['categorias']) > 0) { ?>
+    <div class="alert alert-warning text-center mx-4 mt-4" role="alert">
+      <i class="fas fa-exclamation-circle"></i> Ingresa al menos un autor para registrar un libro.
+    </div>
+    <?php } elseif (count($_SESSION['autores']) > 0 && !count($_SESSION['categorias']) > 0) { ?>
+      <div class="alert alert-warning text-center mx-4 mt-4" role="alert">
+      <i class="fas fa-exclamation-circle"></i> Existen autores registrados. Ingresa al menos una categoria para poder registrar un libro.
+    </div>
+    <?php } elseif (!count($_SESSION['autores']) > 0 && count($_SESSION['categorias']) > 0) { ?>
+      <div class="alert alert-warning text-center mx-4 mt-4" role="alert">
+      <i class="fas fa-exclamation-circle"></i> Existen categorias registradas. Ingresa al menos un autor para poder registrar un libro.
+    </div>
+    <?php }else { ?>
+      <div class="alert alert-warning text-center mx-4 mt-4 d-flex flex-column align-items-center justify-content-center" role="alert">
+      <div>
+        <i class="fas fa-exclamation-circle fs-2"></i>
+        <p>Existen autores y categorias. ¡Haz ingreso de un libro!</p>
+      </div>
+      <a class="btn btn-primary" href="./inicio.php">+ Ingresar libro</a>
+    </div>
+    <?php } ?>
+        
+    
+
     <!--FORM PARA INGRESAR UN AUTOR-->
     <div class="container">
       <form class="autor-form p-4 rounded-4 mt-4 border border-black" action="" method="post">
@@ -122,7 +146,6 @@ if(isset($_POST['autor-form'])) {
                 <th>Nombre</th>
                 <th>País de origen</th>
                 <th>Género Literario</th>
-                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -135,16 +158,12 @@ if(isset($_POST['autor-form'])) {
                 <td><?php echo $autoresForeach->getId(); ?></td>
                 <td><?php echo $autoresForeach->getNombreAutor(); ?></td>
                 <td><?php echo $autoresForeach->getPais(); ?></td>
-                <td><?php echo $autoresForeach->getGeneroLit(); ?></td>
-                <td class="text-center">
-                  <button class="btn btn-success btn-sm">Editar</button>
-                  <button class="btn btn-danger btn-sm">Eliminar</button>
-                </td>
+                <td><?php echo $autoresForeach->getGeneroLit(); ?></td>>
               </tr>
 
             <?php } } else { ?>
                     <tr>
-                      <td colspan="5" class="text-center"><?php echo "Aún no hay registro de autores"; ?></td>
+                      <td colspan="4" class="text-center"><?php echo "Aún no hay registro de autores"; ?></td>
                     </tr>
             <?php } ?>
 
@@ -156,6 +175,8 @@ if(isset($_POST['autor-form'])) {
 
     </div>
   </main>
+
+  <?php include "../partials/footer.php" ?>
 
 </body>
 
